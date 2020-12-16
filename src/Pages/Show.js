@@ -1,27 +1,42 @@
 import React, { Component } from 'react';
 
 class Show extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            bounty: this.props.location.state.bounty
+        };
+    }
+
     render() {
-        const bounty = this.props.location.state;
-        const hunters = bounty.hunters.map((hunter) => {
+        if (!this.state.bounty) {
             return (
-                <p className="hunter" key={`${hunter.name}: ${hunter._id}`}>
-                    {hunter.name}
-                </p>
+                <div className="App">
+                    <h1>Loading...</h1>
+                </div>
             );
-        });
+        }
+
+        let hunters = 'No hunters found';
+
+        if (this.state.bounty.hunters.length > 0) {
+            hunters = this.state.bounty.hunters.map((hunter) => {
+                return (
+                    <p className="hunter" key={`${hunter.name}: ${hunter._id}`}>
+                        {hunter.name}
+                    </p>
+                );
+            });
+        }
+
         return (
             <div>
-                <h2>{bounty.name}</h2>
+                <h2>{this.state.bounty.name}</h2>
                 <div className="bountyInfo">
-                    <h5>Wanted for: {bounty.wantedFor}</h5>
-                    <h5>Reward: ${bounty.reward}</h5>
+                    <h5>Wanted for: {this.state.bounty.wantedFor}</h5>
+                    <h5>Reward: ${this.state.bounty.reward}</h5>
                     <h5>Hunter(s) on file:</h5>
-                    <ul>
-                        {bounty.hunters.length > 0
-                            ? hunters
-                            : 'No hunters on file'}
-                    </ul>
+                    <ul>{hunters}</ul>
                 </div>
             </div>
         );

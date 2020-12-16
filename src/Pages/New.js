@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import FormField from '../Components/FormField';
 
 class New extends Component {
@@ -24,15 +25,21 @@ class New extends Component {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state)
-        }).then(() => {
-            this.setState({
-                name: '',
-                wantedFor: '',
-                reward: 1000,
-                client: '',
-                ship: '',
-                captured: false,
-                lastSeen: ''
+        }).then((res) => {
+            res.json().then((data) => {
+                this.setState({
+                    name: '',
+                    wantedFor: '',
+                    reward: 1000,
+                    client: '',
+                    ship: '',
+                    captured: false,
+                    lastSeen: ''
+                });
+                this.props.history.push({
+                    pathname: `/show/${data.bounty._id}`,
+                    state: { bounty: data.bounty }
+                });
             });
         });
     };
@@ -90,4 +97,4 @@ class New extends Component {
     }
 }
 
-export default New;
+export default withRouter(New);

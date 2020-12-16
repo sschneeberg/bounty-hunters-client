@@ -5,7 +5,7 @@ function BountyLink(props) {
     const path = `show/${props.bounty._id}`;
     return (
         <div>
-            <Link to={{ pathname: path, state: props.bounty }}>
+            <Link to={{ pathname: path, state: { bounty: props.bounty } }}>
                 {props.bounty.name}
             </Link>
         </div>
